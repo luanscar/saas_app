@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: saas
+      POSTGRES_USER: saas
+      POSTGRES_PASSWORD: saas
+    volumes:
+      - ./dados_postgres:/var/lib/postgresql/data
