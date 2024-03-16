@@ -4,6 +4,8 @@ import "./globals.css";
 import ModalProvider from "./providers/modal-provider";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnarToaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +24,11 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html lang="en">
         <body className={inter.className}>
-          <ModalProvider>{children}</ModalProvider>
+          <ModalProvider>
+            {children}
+            <Toaster />
+            <SonnarToaster position="bottom-left" />
+          </ModalProvider>
         </body>
       </html>
     </SessionProvider>

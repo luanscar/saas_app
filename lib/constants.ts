@@ -1,14 +1,179 @@
-import { DashboardIcon, EnvelopeClosedIcon } from "@radix-ui/react-icons";
+import {
+  PiCalendarCheckDuotone,
+  PiChartPieSliceDuotone,
+  PiChatCircleDuotone,
+  PiCheckCircleDuotone,
+  PiClipboardDuotone,
+  PiCompassDuotone,
+  PiCreditCardDuotone,
+  PiDatabaseDuotone,
+  PiFadersHorizontalDuotone,
+  PiFlagDuotone,
+  PiFunnelDuotone,
+  PiHeadphonesDuotone,
+  PiHouseDuotone,
+  PiInfoDuotone,
+  PiLinkDuotone,
+  PiLockDuotone,
+  PiNotificationDuotone,
+  PiPaperPlaneTiltDuotone,
+  PiPokerChipDuotone,
+  PiPowerDuotone,
+  PiReceiptDuotone,
+  PiShieldCheckDuotone,
+  PiShootingStarDuotone,
+  PiShuffleDuotone,
+  PiSlidersDuotone,
+  PiUserCircleDuotone,
+  PiVideoCameraDuotone,
+  PiWalletDuotone,
+  PiWarningDuotone,
+} from "react-icons/pi";
 
 export const icons = [
-	{
-		value: "dashboard",
-		label: "Dashboard",
-		path: DashboardIcon,
-	},
-	{
-		value: "envelopeClosed",
-		label: "Envelope Closed",
-		path: EnvelopeClosedIcon,
-	},
+  {
+    value: "chart",
+    label: "Bar Chart",
+    path: PiChartPieSliceDuotone,
+  },
+  {
+    value: "headphone",
+    label: "Headphones",
+    path: PiHeadphonesDuotone,
+  },
+  {
+    value: "send",
+    label: "Send",
+    path: PiPaperPlaneTiltDuotone,
+  },
+  {
+    value: "pipelines",
+    label: "Pipelines",
+    path: PiShuffleDuotone,
+  },
+  {
+    value: "calendar",
+    label: "Calendar",
+    path: PiCalendarCheckDuotone,
+  },
+  {
+    value: "settings",
+    label: "Settings",
+    path: PiSlidersDuotone,
+  },
+  {
+    value: "check",
+    label: "Check Circled",
+    path: PiCheckCircleDuotone,
+  },
+  {
+    value: "chip",
+    label: "Chip",
+    path: PiPokerChipDuotone,
+  },
+  {
+    value: "compass",
+    label: "Compass",
+    path: PiCompassDuotone,
+  },
+  {
+    value: "database",
+    label: "Database",
+    path: PiDatabaseDuotone,
+  },
+  {
+    value: "flag",
+    label: "Flag",
+    path: PiFlagDuotone,
+  },
+  {
+    value: "home",
+    label: "Home",
+    path: PiHouseDuotone,
+  },
+  {
+    value: "info",
+    label: "Info",
+    path: PiInfoDuotone,
+  },
+  {
+    value: "link",
+    label: "Link",
+    path: PiLinkDuotone,
+  },
+  {
+    value: "lock",
+    label: "Lock",
+    path: PiLockDuotone,
+  },
+  {
+    value: "messages",
+    label: "Messages",
+    path: PiChatCircleDuotone,
+  },
+  {
+    value: "notification",
+    label: "Notification",
+    path: PiNotificationDuotone,
+  },
+  {
+    value: "payment",
+    label: "Payment",
+    path: PiCreditCardDuotone,
+  },
+  {
+    value: "power",
+    label: "Power",
+    path: PiPowerDuotone,
+  },
+  {
+    value: "receipt",
+    label: "Receipt",
+    path: PiReceiptDuotone,
+  },
+  {
+    value: "shield",
+    label: "Shield",
+    path: PiShieldCheckDuotone,
+  },
+  {
+    value: "star",
+    label: "Star",
+    path: PiShootingStarDuotone,
+  },
+  {
+    value: "tune",
+    label: "Tune",
+    path: PiFadersHorizontalDuotone,
+  },
+  {
+    value: "videorecorder",
+    label: "Video Recorder",
+    path: PiVideoCameraDuotone,
+  },
+  {
+    value: "wallet",
+    label: "Wallet",
+    path: PiWalletDuotone,
+  },
+  {
+    value: "warning",
+    label: "Warning",
+    path: PiWarningDuotone,
+  },
+  {
+    value: "person",
+    label: "Person",
+    path: PiUserCircleDuotone,
+  },
+  {
+    value: "category",
+    label: "Category",
+    path: PiFunnelDuotone,
+  },
+  {
+    value: "clipboardIcon",
+    label: "Clipboard Icon",
+    path: PiClipboardDuotone,
+  },
 ];
