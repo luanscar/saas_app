@@ -30,6 +30,7 @@ import { useModal } from "@/app/providers/modal-provider";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "../global/mode-toggle";
+import SubAccountDetails from "../forms/subaccount-details";
 
 type Props = {
   defaultOpen?: boolean;
@@ -226,8 +227,8 @@ const MenuOptions = ({
                       : "No Accounts"}
                   </CommandGroup>
                 </CommandList>
-                {/* {(user?.role === 'AGENCY_OWNER' ||
-                  user?.role === 'AGENCY_ADMIN') && (
+                {(user?.role === "AGENCY_OWNER" ||
+                  user?.role === "AGENCY_ADMIN") && (
                   <SheetClose>
                     <Button
                       className="w-full flex gap-2"
@@ -243,14 +244,14 @@ const MenuOptions = ({
                               userName={user?.name}
                             />
                           </CustomModal>
-                        )
+                        );
                       }}
                     >
                       <PlusCircleIcon size={15} />
                       Create Sub Account
                     </Button>
                   </SheetClose>
-                )} */}
+                )}
               </Command>
             </PopoverContent>
           </Popover>
@@ -275,7 +276,8 @@ const MenuOptions = ({
                         key={sidebarOptions.id}
                         className={cn([
                           "md:w-[320px] w-full",
-                          sidebarOptions.name.toLowerCase() === activePath &&
+                          (sidebarOptions.name.toLowerCase() === activePath ||
+                            activePath === "/") &&
                             "bg-primary",
                         ])}
                       >
