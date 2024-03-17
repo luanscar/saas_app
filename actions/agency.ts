@@ -23,12 +23,12 @@ export const upsertAgency = async (agency: Agency, price?: Plan) => {
           create: [
             {
               name: "Dashboard",
-              icon: "category",
+              icon: "chart",
               link: `/agency/${agency.id}`,
             },
             {
               name: "Launchpad",
-              icon: "clipboardIcon",
+              icon: "launchpad",
               link: `/agency/${agency.id}/launchpad`,
             },
             {
@@ -153,6 +153,7 @@ export const createTeamUser = async (agencyId: string, user: User) => {
 
 export const verifyAndAcceptInvitation = async () => {
   const user = await currentUser();
+
   if (!user) return redirect("/sign-in");
   const invitationExists = await db.invitation.findUnique({
     where: {
@@ -167,10 +168,12 @@ export const verifyAndAcceptInvitation = async () => {
       agencyId: invitationExists.agencyId,
       image: user.image,
       id: user.id,
-      name: `${user.name}`,
+      name: user.name as string,
       role: invitationExists.role,
       createdAt: new Date(),
       updatedAt: new Date(),
+      emailVerified: null,
+      password: null,
     });
     await saveActivityLogsNotification({
       agencyId: invitationExists?.agencyId,

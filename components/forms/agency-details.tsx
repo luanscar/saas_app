@@ -59,7 +59,7 @@ export default function AgencyDetails({ data }: Props) {
     if (data) {
       form.reset(data);
     }
-  }, [data]);
+  }, [data, form]);
 
   const onSubmit = async (values: z.infer<typeof AgencyDetailsSchema>) => {
     try {

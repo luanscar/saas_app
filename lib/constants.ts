@@ -20,6 +20,7 @@ import {
   PiPokerChipDuotone,
   PiPowerDuotone,
   PiReceiptDuotone,
+  PiRocketLaunchDuotone,
   PiShieldCheckDuotone,
   PiShootingStarDuotone,
   PiShuffleDuotone,
@@ -35,6 +36,11 @@ export const icons = [
     value: "chart",
     label: "Bar Chart",
     path: PiChartPieSliceDuotone,
+  },
+  {
+    value: "launchpad",
+    label: "LaunchPad",
+    path: PiRocketLaunchDuotone,
   },
   {
     value: "headphone",

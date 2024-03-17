@@ -1,18 +1,41 @@
-import { auth } from "@/auth";
+import { verifyAndAcceptInvitation } from "@/actions/agency";
+import BlurPage from "@/components/global/blur-page";
+import Sidebar from "@/components/sidebar";
 
-import MainSidebar from "@/components/sidebar/main-sidebar";
+import { currentUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
+type AgencyLayoutIdProps = {
+  children: React.ReactNode;
+  params: { agencyId: string };
+};
 
 export default async function AgencyLayoutId({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
-	const session = await auth();
-	if (!session) return;
-	return (
-		<main className="flex h-screen">
-			<MainSidebar user={session.user} />
-			{children}
-		</main>
-	);
+  children,
+  params,
+}: AgencyLayoutIdProps) {
+  const agencyId = await verifyAndAcceptInvitation();
+
+  const user = await currentUser();
+  if (!user) return;
+
+  if (!user) {
+    return redirect("/");
+  }
+
+  if (!agencyId) {
+    return redirect("/agency");
+  }
+
+  return (
+    <div className="h-screen overflow-hidden">
+      <Sidebar id={params.agencyId} type="agency" />
+
+      <div className="md:pl-[300px]">
+        <div className="relative">
+          <BlurPage>{children}</BlurPage>
+        </div>
+      </div>
+    </div>
+  );
 }
