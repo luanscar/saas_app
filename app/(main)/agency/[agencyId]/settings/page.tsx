@@ -39,9 +39,6 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
   if (!agencyDetails) return null;
 
   const subAccounts = agencyDetails.SubAccount;
-  const subAccountsPermissions = agencyDetails.users.flatMap(
-    (item) => item.Permissions
-  );
 
   return (
     <>

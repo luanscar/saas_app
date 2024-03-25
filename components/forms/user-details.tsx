@@ -216,7 +216,7 @@ const UserDetails = ({ id, type, subAccounts, userData }: Props) => {
             <FormField
               disabled={form.formState.isSubmitting}
               control={form.control}
-              name="avatarUrl"
+              name="image"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Profile picture</FormLabel>
