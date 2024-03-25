@@ -28,7 +28,7 @@ export default async function AgencyLayoutId({
   }
 
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="h-screen ">
       <Sidebar id={params.agencyId} type="agency" />
 
       <div className="md:pl-[300px]">

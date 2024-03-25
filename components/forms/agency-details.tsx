@@ -64,7 +64,7 @@ export default function AgencyDetails({ data }: Props) {
   const onSubmit = async (values: z.infer<typeof AgencyDetailsSchema>) => {
     try {
       let newUserData;
-      if (!data?.id) {
+      if (data?.id) {
         const bodyData = {
           email: values.companyEmail,
           name: values.name,
