@@ -42,9 +42,7 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
 
   return (
     <>
-      <h1>Settings</h1>
-      <Separator />
-      <div className="flex justify-center items-center flex-col md:flex-row space-x-8 mt-14  w-full">
+      <div className="flex justify-center items-center flex-col md:flex-row space-x-8   w-full">
         <div className="w-[490px]">
           <AgencyDetails data={agencyDetails} />
         </div>

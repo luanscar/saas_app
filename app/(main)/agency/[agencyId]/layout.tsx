@@ -1,5 +1,7 @@
 import { verifyAndAcceptInvitation } from "@/actions/agency";
+import { getNotificationAndUser } from "@/actions/user";
 import BlurPage from "@/components/global/blur-page";
+import InfoBar from "@/components/global/infobar";
 import Sidebar from "@/components/sidebar";
 
 import { currentUser } from "@/lib/auth";
@@ -27,11 +29,16 @@ export default async function AgencyLayoutId({
     return redirect("/agency");
   }
 
+  let allNoti: any = [];
+  const notifications = await getNotificationAndUser(agencyId);
+  if (notifications) allNoti = notifications;
+
   return (
     <div className="h-screen ">
       <Sidebar id={params.agencyId} type="agency" />
 
       <div className="md:pl-[300px]">
+        <InfoBar notifications={allNoti} role={allNoti.User?.role} />
         <div className="relative">
           <BlurPage>{children}</BlurPage>
         </div>
