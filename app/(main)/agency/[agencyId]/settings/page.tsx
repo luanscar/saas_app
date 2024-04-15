@@ -1,3 +1,4 @@
+import { getUserDetails } from "@/actions/user";
 import { auth } from "@/auth";
 import AgencyDetails from "@/components/forms/agency-details";
 import UserDetails from "@/components/forms/user-details";
@@ -14,13 +15,13 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
   const authUser = await currentUser();
   if (!authUser) return null;
 
-  const userDetails = await db.user.findUnique({
+  const userAuth = await db.user.findUnique({
     where: {
       email: authUser.email,
     },
   });
 
-  if (!userDetails) return null;
+  if (!userAuth) return null;
 
   const agencyDetails = await db.agency.findUnique({
     where: {
@@ -36,25 +37,22 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
     },
   });
 
-  if (!agencyDetails) return null;
+  const userDetails = await getUserDetails();
 
-  const subAccounts = agencyDetails.SubAccount;
+  const subAccounts = userDetails?.Agency?.SubAccount.filter(
+    (subaccount) => subaccount.agencyId === agencyDetails?.id
+  );
+
+  if (!agencyDetails) return null;
 
   return (
     <>
-      <div className="flex justify-center items-center flex-col md:flex-row space-x-8   w-full">
-        <div className="w-[490px]">
-          <AgencyDetails data={agencyDetails} />
-        </div>
-        <div className="w-[490px]">
-          <UserDetails
-            type="agency"
-            id={params.agencyId}
-            subAccounts={subAccounts}
-            userData={userDetails}
-          />
-        </div>
-      </div>
+      <UserDetails
+        id={agencyDetails.id}
+        type="agency"
+        userDetails={userDetails}
+        subAccounts={subAccounts}
+      />
     </>
   );
 }

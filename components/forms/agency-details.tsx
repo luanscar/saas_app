@@ -42,13 +42,7 @@ export default function AgencyDetails({ data }: Props) {
     defaultValues: {
       name: data?.name,
       companyEmail: data?.companyEmail,
-      companyPhone: data?.companyPhone,
       whiteLabel: data?.whiteLabel || false,
-      address: data?.address,
-      city: data?.city,
-      zipCode: data?.zipCode,
-      state: data?.state,
-      country: data?.country,
       agencyLogo: data?.agencyLogo,
     },
   });
@@ -64,42 +58,19 @@ export default function AgencyDetails({ data }: Props) {
   const onSubmit = async (values: z.infer<typeof AgencyDetailsSchema>) => {
     try {
       let newUserData;
-      if (data?.id) {
+      if (data?.id || !data?.id) {
         const bodyData = {
           email: values.companyEmail,
           name: values.name,
-          shipping: {
-            address: {
-              city: values.city,
-              country: values.country,
-              line1: values.address,
-              postal_code: values.zipCode,
-              state: values.zipCode,
-            },
-            name: values.name,
-          },
-          address: {
-            city: values.city,
-            country: values.country,
-            line1: values.address,
-            postal_code: values.zipCode,
-            state: values.zipCode,
-          },
         };
 
         newUserData = await initUser({ role: "AGENCY_OWNER" });
 
         const response = await upsertAgency({
           id: data?.id ? data.id : v4(),
-          address: values.address,
           agencyLogo: values.agencyLogo,
-          city: values.city,
-          companyPhone: values.companyPhone,
-          country: values.country,
           name: values.name,
-          state: values.state,
           whiteLabel: values.whiteLabel,
-          zipCode: values.zipCode,
           createdAt: new Date(),
           updatedAt: new Date(),
           companyEmail: values.companyEmail,
@@ -179,23 +150,6 @@ export default function AgencyDetails({ data }: Props) {
             />
           </div>
 
-          <div className="flex md:flex-row gap-4">
-            <FormField
-              disabled={isLoading}
-              control={form.control}
-              name="companyPhone"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>Agency Phone Number</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Phone" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
           <FormField
             disabled={isLoading}
             control={form.control}
@@ -222,78 +176,7 @@ export default function AgencyDetails({ data }: Props) {
               );
             }}
           />
-          <FormField
-            disabled={isLoading}
-            control={form.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormLabel>Address</FormLabel>
-                <FormControl>
-                  <Input placeholder="123 st..." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex md:flex-row gap-4">
-            <FormField
-              disabled={isLoading}
-              control={form.control}
-              name="city"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>City</FormLabel>
-                  <FormControl>
-                    <Input placeholder="City" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              disabled={isLoading}
-              control={form.control}
-              name="state"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>State</FormLabel>
-                  <FormControl>
-                    <Input placeholder="State" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              disabled={isLoading}
-              control={form.control}
-              name="zipCode"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormLabel>Zipcpde</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Zipcode" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormField
-            disabled={isLoading}
-            control={form.control}
-            name="country"
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormLabel>Country</FormLabel>
-                <FormControl>
-                  <Input placeholder="Country" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+
           {/* {data?.id && (
 				// Implementar depois
                 // <div className="flex flex-col gap-2">

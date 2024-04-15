@@ -27,16 +27,9 @@ const LaunchPadPage = async ({ params, searchParams }: Props) => {
   if (!agencyDetails) return;
 
   const allDetailsExist =
-    agencyDetails.address &&
-    agencyDetails.address &&
     agencyDetails.agencyLogo &&
-    agencyDetails.city &&
     agencyDetails.companyEmail &&
-    agencyDetails.companyPhone &&
-    agencyDetails.country &&
-    agencyDetails.name &&
-    agencyDetails.state &&
-    agencyDetails.zipCode;
+    agencyDetails.name;
 
   let connectedStripeAccount = false;
 

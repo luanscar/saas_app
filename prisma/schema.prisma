@@ -124,13 +124,7 @@ model Agency {
   name             String
   agencyLogo       String                @db.Text
   companyEmail     String                @db.Text
-  companyPhone     String
   whiteLabel       Boolean               @default(true)
-  address          String
-  city             String
-  zipCode          String
-  state            String
-  country          String
   goal             Int                   @default(5)
   users            User[]
   createdAt        DateTime              @default(now())
@@ -151,13 +145,7 @@ model SubAccount {
   createdAt        DateTime                  @default(now())
   updatedAt        DateTime                  @updatedAt
   companyEmail     String                    @db.Text
-  companyPhone     String
   goal             Int                       @default(5)
-  address          String
-  city             String
-  zipCode          String
-  state            String
-  country          String
   agencyId         String
   Agency           Agency                    @relation(fields: [agencyId], references: [id], onDelete: Cascade)
   SidebarOption    SubAccountSidebarOption[]

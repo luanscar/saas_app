@@ -283,10 +283,12 @@ const MenuOptions = ({
                       >
                         <Link
                           href={sidebarOptions.link}
-                          className="flex items-center gap-2  rounded-md transition-all md:w-full w-[320px]"
+                          className="flex items-center gap-2 text-2xl  rounded-md transition-all md:w-full w-[320px]"
                         >
                           {val}
-                          <span>{sidebarOptions.name}</span>
+                          <span className="text-base">
+                            {sidebarOptions.name}
+                          </span>
                         </Link>
                       </CommandItem>
                     );

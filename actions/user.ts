@@ -24,6 +24,26 @@ export const initUser = async (newUser: Partial<User>) => {
   return userData;
 };
 
+export const getUserDetails = async () => {
+  const user = await currentUser();
+
+  if (!user) return null;
+
+  const userData = await db.user.findUnique({
+    where: { email: user.email },
+    include: {
+      Agency: {
+        include: {
+          SubAccount: { include: { Permissions: true } },
+          SidebarOption: true,
+        },
+      },
+    },
+  });
+
+  return userData;
+};
+
 export const getAuthUserDetails = async () => {
   const user = await currentUser();
   if (!user) {
@@ -92,19 +112,33 @@ export const updateUser = async (user: Partial<User>) => {
   return response;
 };
 
-
-
 export const getNotificationAndUser = async (agencyId: string) => {
   try {
     const response = await db.notification.findMany({
       where: { agencyId },
       include: { User: true },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
-    })
-    return response
+    });
+    return response;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
+
+export const deleteUser = async (userId: string) => {
+  const deletedUser = await db.user.delete({ where: { id: userId } });
+
+  return deletedUser;
+};
+
+export const getUser = async (id: string) => {
+  const user = await db.user.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return user;
+};
