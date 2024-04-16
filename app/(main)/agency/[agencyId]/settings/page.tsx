@@ -51,7 +51,6 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
         id={agencyDetails.id}
         type="agency"
         userDetails={userDetails}
-        subAccounts={subAccounts}
       />
     </>
   );
