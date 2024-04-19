@@ -256,7 +256,7 @@ const UserDetails = ({
               )}
             />
 
-            {userDetails?.role === "AGENCY_OWNER" && (
+            {/* {userDetails?.role === "AGENCY_OWNER" && (
               <div>
                 <Separator className="my-4" />
                 <FormLabel> User Permissions</FormLabel>
@@ -298,7 +298,7 @@ const UserDetails = ({
                   })}
                 </div>
               </div>
-            )}
+            )} */}
 
             <Button disabled={form.formState.isSubmitting} type="submit">
               {form.formState.isSubmitting ? <Loading /> : "Save User Details"}

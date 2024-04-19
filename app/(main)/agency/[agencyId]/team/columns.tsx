@@ -44,6 +44,7 @@ import { useModal } from "@/app/providers/modal-provider";
 import { deleteUser, getUser } from "@/actions/user";
 import { UserDetailsType } from "@/types";
 import UserDetails from "@/components/forms/user-details";
+import UserPermissions from "@/components/forms/user-permissions";
 
 export const columns: ColumnDef<UserDetailsType>[] = [
   {
@@ -205,6 +206,33 @@ const CellActions: React.FC<CellActionsProps> = ({ rowData }) => {
           >
             <Edit size={15} />
             Edit Details
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem
+            className="flex gap-2"
+            onClick={() => {
+              setOpen(
+                <CustomModal
+                  subheading="You can change permissions only when the user has an owned subaccount"
+                  title="Edit User Permissions"
+                >
+                  <UserPermissions
+                    type="agency"
+                    id={rowData?.Agency?.id || null}
+                    userDetails={rowData}
+                    subAccounts={rowData.Agency?.SubAccount}
+                    userPermissions={rowData.Permissions}
+                  />
+                </CustomModal>,
+                async () => {
+                  return { user: await getUser(rowData?.id) };
+                }
+              );
+            }}
+          >
+            <Edit size={15} />
+            Edit Permissions
           </DropdownMenuItem>
           {rowData.role !== "AGENCY_OWNER" && (
             <AlertDialogTrigger asChild>
