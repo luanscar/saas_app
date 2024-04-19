@@ -48,16 +48,7 @@ const FileUpload = ({ apiEndpoint, onChange, value }: Props) => {
   }
   return (
     <div className="w-full bg-muted/30">
-      <UploadButton
-        endpoint={apiEndpoint}
-        onClientUploadComplete={(res) => {
-          onChange(res?.[0].url);
-        }}
-        onUploadError={(error: Error) => {
-          console.log(error);
-        }}
-      />
-      {/* <UploadDropzone
+      {/* <UploadButton
         endpoint={apiEndpoint}
         onClientUploadComplete={(res) => {
           onChange(res?.[0].url);
@@ -66,6 +57,15 @@ const FileUpload = ({ apiEndpoint, onChange, value }: Props) => {
           console.log(error);
         }}
       /> */}
+      <UploadDropzone
+        endpoint={apiEndpoint}
+        onClientUploadComplete={(res) => {
+          onChange(res?.[0].url);
+        }}
+        onUploadError={(error: Error) => {
+          console.log(error);
+        }}
+      />
     </div>
   );
 };

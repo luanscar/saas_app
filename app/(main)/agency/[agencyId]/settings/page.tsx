@@ -2,6 +2,13 @@ import { getUserDetails } from "@/actions/user";
 import { auth } from "@/auth";
 import AgencyDetails from "@/components/forms/agency-details";
 import UserDetails from "@/components/forms/user-details";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -50,7 +57,10 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
   if (!agencyDetails) return null;
 
   return (
-    <>
+    <div className="px-24">
+      <h1 className="md:text-3xl font-semibold">Settings</h1>
+
+      <Separator className="md:my-6 my-3" />
       <UserDetails
         id={agencyDetails.id}
         type="agency"
@@ -58,6 +68,27 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
         userPermissions={userPermissions}
         subAccounts={subAccounts}
       />
-    </>
+      <UserDetails
+        id={agencyDetails.id}
+        type="agency"
+        userDetails={userDetails}
+        userPermissions={userPermissions}
+        subAccounts={subAccounts}
+      />
+      <UserDetails
+        id={agencyDetails.id}
+        type="agency"
+        userDetails={userDetails}
+        userPermissions={userPermissions}
+        subAccounts={subAccounts}
+      />
+      <UserDetails
+        id={agencyDetails.id}
+        type="agency"
+        userDetails={userDetails}
+        userPermissions={userPermissions}
+        subAccounts={subAccounts}
+      />
+    </div>
   );
 }

@@ -2,6 +2,8 @@ import React from "react";
 
 import MenuOptions from "./menu-options";
 import { getAuthUserDetails } from "@/actions/user";
+import MenuSidebar from "./menu-sidebar";
+import { SubAccount } from "@prisma/client";
 
 type SidebarProps = {
   id: string;
@@ -40,7 +42,7 @@ const Sidebar = async ({ id, type }: SidebarProps) => {
       : user.Agency.SubAccount.find((subaccount) => subaccount.id === id)
           ?.SidebarOption || [];
 
-  const subaccounts = user.Agency.SubAccount.filter((subaccount) =>
+  const subAccounts = user.Agency.SubAccount.filter((subaccount) =>
     user.Permissions.find(
       (permission) =>
         permission.subAccountId === subaccount.id && permission.access
@@ -83,21 +85,20 @@ const Sidebar = async ({ id, type }: SidebarProps) => {
     // </Sidebar>
 
     <>
-      <MenuOptions
+      <MenuSidebar
         defaultOpen={true}
         details={details}
-        id={id}
         sidebarLogo={sideBarLogo}
         sidebarOpt={sidebarOpt}
-        subAccounts={subaccounts}
+        subAccounts={subAccounts}
         user={user}
       />
-      <MenuOptions
+      <MenuSidebar
+        defaultOpen={false}
         details={details}
-        id={id}
         sidebarLogo={sideBarLogo}
         sidebarOpt={sidebarOpt}
-        subAccounts={subaccounts}
+        subAccounts={subAccounts}
         user={user}
       />
     </>
