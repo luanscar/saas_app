@@ -42,10 +42,7 @@ import { useRouter } from "next/navigation";
 import CustomModal from "@/components/global/custom-modal";
 import { useModal } from "@/app/providers/modal-provider";
 import { deleteUser, getUser } from "@/actions/user";
-import {
-  UserDetailsType,
-  UsersWithAgencySubAccountPermissionsSidebarOptions,
-} from "@/types";
+import { UserDetailsType } from "@/types";
 import UserDetails from "@/components/forms/user-details";
 
 export const columns: ColumnDef<UserDetailsType>[] = [
@@ -196,6 +193,8 @@ const CellActions: React.FC<CellActionsProps> = ({ rowData }) => {
                     type="agency"
                     id={rowData?.Agency?.id || null}
                     userDetails={rowData}
+                    subAccounts={rowData.Agency?.SubAccount}
+                    userPermissions={rowData.Permissions}
                   />
                 </CustomModal>,
                 async () => {

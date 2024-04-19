@@ -38,6 +38,7 @@ export const getUserDetails = async () => {
           SidebarOption: true,
         },
       },
+      Permissions: true,
     },
   });
 

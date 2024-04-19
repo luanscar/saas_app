@@ -32,6 +32,7 @@ const TeamPage = async ({ params }: Props) => {
           SidebarOption: true,
         },
       },
+      Permissions: true,
     },
   });
 

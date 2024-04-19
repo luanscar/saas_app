@@ -36,7 +36,6 @@ import { useModal } from "@/app/providers/modal-provider";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Role } from "@prisma/client";
 import {
   Select,
   SelectContent,
@@ -44,15 +43,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Permissions, SubAccount } from "@prisma/client";
+import { json } from "stream/consumers";
 
 type Props = {
   id: string | null;
   type: "agency" | "subaccount";
   userDetails?: UserDetailsType;
+  userPermissions?: Permissions[] | undefined;
+  subAccounts?: SubAccount[];
 };
 
-const UserDetails = ({ id, type, userDetails }: Props) => {
-  const [subAccountPermissions, setSubAccountsPermissions] =
+const UserDetails = ({
+  id,
+  type,
+  userDetails,
+  subAccounts,
+  userPermissions,
+}: Props) => {
+  const [subAccountsPermissions, setSubAccountsPermissions] =
     useState<boolean>();
 
   const [roleState, setRoleState] = useState("");
@@ -70,7 +79,7 @@ const UserDetails = ({ id, type, userDetails }: Props) => {
     if (!userDetails?.email) return;
 
     const response = await changeUserPermissions(
-      permissionsId ? permissionsId : v4(),
+      permissionsId,
       userDetails.email,
       subAccountId,
       val
@@ -90,11 +99,6 @@ const UserDetails = ({ id, type, userDetails }: Props) => {
     }
     router.refresh();
   };
-
-  useEffect(() => {
-    const userPerm = userDetails?.Agency?.SubAccount[0].Permissions[0].access;
-    setSubAccountsPermissions(userPerm);
-  }, []);
 
   const form = useForm<z.infer<typeof userDataSchema>>({
     resolver: zodResolver(userDataSchema),
@@ -252,42 +256,49 @@ const UserDetails = ({ id, type, userDetails }: Props) => {
               )}
             />
 
-            {userDetails?.role === "AGENCY_OWNER" &&
-              userDetails?.Agency?.SubAccount?.map((item) => {
-                const permission = item.Permissions[0];
-                return (
-                  <Card key={item?.id}>
-                    <CardHeader>
-                      <CardTitle>Accounts Permissions</CardTitle>
-                      <CardDescription>
-                        Manage the access permissions for each subaccount within
-                        your agency.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center justify-between space-x-2">
-                        <Label
-                          htmlFor="necessary"
-                          className="flex flex-col space-y-1"
-                        >
-                          <span>{item?.name}</span>
-                        </Label>
+            {userDetails?.role === "AGENCY_OWNER" && (
+              <div>
+                <Separator className="my-4" />
+                <FormLabel> User Permissions</FormLabel>
+                <FormDescription className="mb-4">
+                  You can give Sub Account access to team member by turning on
+                  access control for each Sub Account. This is only visible to
+                  agency owners
+                </FormDescription>
+                <div className="flex flex-col gap-4">
+                  {subAccounts?.map((subAccount) => {
+                    const subAccountPermissionsDetails = userPermissions?.find(
+                      (p) => p.subAccountId === subAccount.id
+                    );
+
+                    return (
+                      <div
+                        key={subAccount.id}
+                        className="flex items-center justify-between rounded-lg border p-4"
+                      >
+                        <div>
+                          <p>{subAccount.name}</p>
+                        </div>
                         <Switch
-                          checked={subAccountPermissions}
+                          // disabled={loadingPermissions}
+                          checked={subAccountPermissionsDetails?.access}
                           onCheckedChange={(val) => {
-                            setSubAccountsPermissions(val);
+                            if (subAccountPermissionsDetails) {
+                              subAccountPermissionsDetails.access = val;
+                            }
                             onChangePermission(
-                              permission?.subAccountId,
+                              subAccount.id,
                               val,
-                              permission?.id
+                              subAccountPermissionsDetails?.id
                             );
                           }}
                         />
                       </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             <Button disabled={form.formState.isSubmitting} type="submit">
               {form.formState.isSubmitting ? <Loading /> : "Save User Details"}

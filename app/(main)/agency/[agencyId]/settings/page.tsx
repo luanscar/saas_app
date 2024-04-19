@@ -5,6 +5,8 @@ import UserDetails from "@/components/forms/user-details";
 import { Separator } from "@/components/ui/separator";
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { UserDetailsType } from "@/types";
+import { CornerDownLeft } from "lucide-react";
 import React from "react";
 
 type SettingsPageProps = {
@@ -39,9 +41,11 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
 
   const userDetails = await getUserDetails();
 
-  const subAccounts = userDetails?.Agency?.SubAccount.filter(
-    (subaccount) => subaccount.agencyId === agencyDetails?.id
-  );
+  const subAccounts = userDetails?.Agency?.SubAccount;
+
+  const userPermissions = userDetails?.Permissions;
+
+  console.log(JSON.stringify(userDetails, null, 2));
 
   if (!agencyDetails) return null;
 
@@ -51,6 +55,8 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
         id={agencyDetails.id}
         type="agency"
         userDetails={userDetails}
+        userPermissions={userPermissions}
+        subAccounts={subAccounts}
       />
     </>
   );
