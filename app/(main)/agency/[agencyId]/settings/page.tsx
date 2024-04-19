@@ -52,43 +52,36 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
 
   const userPermissions = userDetails?.Permissions;
 
-  console.log(JSON.stringify(userDetails, null, 2));
-
   if (!agencyDetails) return null;
 
   return (
-    <div className="px-24">
+    <div className="px-96">
       <h1 className="md:text-3xl font-semibold">Settings</h1>
 
       <Separator className="md:my-6 my-3" />
-      <UserDetails
-        id={agencyDetails.id}
-        type="agency"
-        userDetails={userDetails}
-        userPermissions={userPermissions}
-        subAccounts={subAccounts}
-      />
-      <UserDetails
-        id={agencyDetails.id}
-        type="agency"
-        userDetails={userDetails}
-        userPermissions={userPermissions}
-        subAccounts={subAccounts}
-      />
-      <UserDetails
-        id={agencyDetails.id}
-        type="agency"
-        userDetails={userDetails}
-        userPermissions={userPermissions}
-        subAccounts={subAccounts}
-      />
-      <UserDetails
-        id={agencyDetails.id}
-        type="agency"
-        userDetails={userDetails}
-        userPermissions={userPermissions}
-        subAccounts={subAccounts}
-      />
+      <div className="flex flex-col gap-6">
+        <div>
+          <h1 className="md:text-xl font-semibold">Agency Details</h1>
+          <span className="text-muted-foreground mb-5">
+            Manager your Agency details
+          </span>
+          <AgencyDetails data={agencyDetails} />
+        </div>
+        <Separator className="md:my-6 my-3" />
+        <div>
+          <h1 className="md:text-xl font-semibold">User Details</h1>
+          <span className="text-muted-foreground mb-5">
+            Manager your accounts details
+          </span>
+          <UserDetails
+            id={agencyDetails.id}
+            type="agency"
+            userDetails={userDetails}
+            userPermissions={userPermissions}
+            subAccounts={subAccounts}
+          />
+        </div>
+      </div>
     </div>
   );
 }

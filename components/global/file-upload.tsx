@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { UploadButton, UploadDropzone } from "@/lib/uploadthing";
 import { Cross1Icon, FileIcon } from "@radix-ui/react-icons";
 import { error } from "console";
+import { X } from "lucide-react";
 
 type Props = {
   apiEndpoint: "agencyLogo" | "avatar" | "subaccountLogo";
@@ -16,15 +17,17 @@ const FileUpload = ({ apiEndpoint, onChange, value }: Props) => {
 
   if (value) {
     return (
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-row  justify-start items-center gap-4">
         {type !== "pdf" ? (
-          <div className="relative w-40 h-40">
-            <Image
-              src={value}
-              alt="uploaded image"
-              className="object-contain"
-              fill
-            />
+          <div className="relative h-20 w-20">
+            <Image fill src={value} alt="Upload" className="rounded-full" />
+            <button
+              onClick={() => onChange("")}
+              className="bg-rose-500 text-white p-1 rounded-full absolute top-0 right-0 shadow-sm"
+              type="button"
+            >
+              <X className="h-4 w-4" />
+            </button>
           </div>
         ) : (
           <div className="relative flex items-center p-2 mt-2 rounded-md bg-background/10">
@@ -39,10 +42,6 @@ const FileUpload = ({ apiEndpoint, onChange, value }: Props) => {
             </a>
           </div>
         )}
-        <Button onClick={() => onChange("")} variant="ghost" type="button">
-          <Cross1Icon className="h-4 w-4" />
-          Remove Logo
-        </Button>
       </div>
     );
   }
