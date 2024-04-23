@@ -76,8 +76,7 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
           <UserDetails
             id={agencyDetails.id}
             type="agency"
-            userDetails={userDetails}
-            userPermissions={userPermissions}
+            userData={authUser}
             subAccounts={subAccounts}
           />
         </div>

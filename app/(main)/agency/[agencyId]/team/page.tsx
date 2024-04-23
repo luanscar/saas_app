@@ -1,10 +1,13 @@
 import { db } from "@/lib/db";
 import React from "react";
-import DataTable from "./data-table";
 import { Plus } from "lucide-react";
 import { columns } from "./columns";
+import SendInvitation from "@/components/forms/send-invitation";
 import { currentUser } from "@/lib/auth";
-import { getUserDetails } from "@/actions/user";
+import DataTable from "./data-table";
+import { redirect } from "next/navigation";
+import next from "next";
+import Unauthorized from "@/components/unauthorized";
 
 type Props = {
   params: { agencyId: string };
@@ -12,27 +15,26 @@ type Props = {
 
 const TeamPage = async ({ params }: Props) => {
   const authUser = await currentUser();
+  const teamMembers = await db.user.findMany({
+    where: {
+      Agency: {
+        id: params.agencyId,
+      },
+    },
+    include: {
+      Agency: { include: { SubAccount: true } },
+      Permissions: { include: { SubAccount: true } },
+    },
+  });
 
   if (!authUser) return null;
+
   const agencyDetails = await db.agency.findUnique({
     where: {
       id: params.agencyId,
     },
     include: {
       SubAccount: true,
-    },
-  });
-
-  const teamMembers = await db.user.findMany({
-    where: { email: authUser.email },
-    include: {
-      Agency: {
-        include: {
-          SubAccount: { include: { Permissions: true } },
-          SidebarOption: true,
-        },
-      },
-      Permissions: true,
     },
   });
 
@@ -46,7 +48,7 @@ const TeamPage = async ({ params }: Props) => {
           Add
         </>
       }
-      // modalChildren={<SendInvitation agencyId={agencyDetails.id} />}
+      modalChildren={<SendInvitation agencyId={agencyDetails.id} />}
       filterValue="name"
       columns={columns}
       data={teamMembers}

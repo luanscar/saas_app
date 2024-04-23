@@ -2,8 +2,9 @@
 
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { Agency, Plan, User } from "@prisma/client";
+import { Agency, Plan, Role, User } from "@prisma/client";
 import { redirect } from "next/navigation";
+import { v4 } from "uuid";
 
 export const upsertAgency = async (agency: Agency, price?: Plan) => {
   if (!agency.companyEmail) return null;
@@ -16,9 +17,12 @@ export const upsertAgency = async (agency: Agency, price?: Plan) => {
       update: agency,
       create: {
         users: {
-          connect: { email: agency.companyEmail },
+          connect: {
+            email: agency.companyEmail,
+          },
         },
         ...agency,
+
         SidebarOption: {
           create: [
             {
@@ -145,9 +149,25 @@ export const saveActivityLogsNotification = async ({
   }
 };
 
+export const sendInvitation = async (
+  role: Role,
+  email: string,
+  agencyId: string
+) => {
+  const resposne = await db.invitation.create({
+    data: { email, agencyId, role },
+  });
+
+  return resposne;
+};
+
 export const createTeamUser = async (agencyId: string, user: User) => {
   if (user.role === "AGENCY_OWNER") return null;
-  const response = await db.user.create({ data: { ...user } });
+  const response = await db.user.upsert({
+    where: { id: user.id },
+    update: { ...user },
+    create: { ...user },
+  });
   return response;
 };
 

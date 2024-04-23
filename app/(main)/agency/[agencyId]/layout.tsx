@@ -5,6 +5,7 @@ import InfoBar from "@/components/global/infobar";
 import Sidebar from "@/components/sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import Unauthorized from "@/components/unauthorized";
 
 import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
@@ -21,7 +22,9 @@ export default async function AgencyLayoutId({
   const agencyId = await verifyAndAcceptInvitation();
 
   const user = await currentUser();
-  if (!user) return;
+  if (user?.role !== "AGENCY_OWNER" && user?.role !== "AGENCY_ADMIN") {
+    return <Unauthorized />;
+  }
 
   if (!user) {
     return redirect("/");
@@ -39,7 +42,7 @@ export default async function AgencyLayoutId({
     <div>
       <Sidebar id={agencyId} type="agency" />
       <ScrollArea className="h-screen ">
-        <main className="md:ml-[540px] mb-16 gap-4 p-4 md:gap-8 md:p-10 ">
+        <main className="md:ml-72 mb-16 gap-4 p-4 md:gap-8 md:p-10 ">
           {children}
         </main>
       </ScrollArea>

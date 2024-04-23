@@ -1,50 +1,29 @@
 "use client";
-import { UserDetailsType } from "@/types";
+import {
+  AuthUserWithAgencySigebarOptionsSubAccounts,
+  UserDetailsType,
+  UserWithPermissionsAndSubAccounts,
+} from "@/types";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
-import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
-import { changeUserPermissions, updateUser } from "@/actions/user";
-import { v4 } from "uuid";
-import { toast, useToast } from "../ui/use-toast";
+import {
+  changeUserPermissions,
+  getAuthUserDetails,
+  getUserPermissions,
+} from "@/actions/user";
+import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
-import { Separator } from "../ui/separator";
-import Loading from "../global/loading";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
 
-import FileUpload from "../global/file-upload";
-import { Input } from "../ui/input";
-import { userDataSchema } from "@/schemas";
-import { saveActivityLogsNotification } from "@/actions/agency";
 import { useModal } from "@/app/providers/modal-provider";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 import { Permissions, SubAccount } from "@prisma/client";
-import { json } from "stream/consumers";
+import { v4 } from "uuid";
 
 type Props = {
   id: string | null;
@@ -62,7 +41,10 @@ const UserPermissions = ({
   userPermissions,
 }: Props) => {
   const [subAccountsPermissions, setSubAccountsPermissions] =
-    useState<boolean>();
+    useState<UserWithPermissionsAndSubAccounts>();
+
+  const [authUserData, setAuthUserData] =
+    useState<AuthUserWithAgencySigebarOptionsSubAccounts | null>(null);
 
   const [roleState, setRoleState] = useState("");
 
@@ -70,6 +52,16 @@ const UserPermissions = ({
 
   const { toast } = useToast();
   const router = useRouter();
+
+  useEffect(() => {
+    if (data.user) {
+      const fetchDetails = async () => {
+        const response = await getAuthUserDetails();
+        if (response) setAuthUserData(response);
+      };
+      fetchDetails();
+    }
+  }, [data]);
 
   const onChangePermission = async (
     subAccountId: string,
@@ -100,6 +92,16 @@ const UserPermissions = ({
     router.refresh();
   };
 
+  useEffect(() => {
+    if (!data.user) return;
+    const getPermissions = async () => {
+      if (!data.user) return;
+      const permission = await getUserPermissions(data.user.id);
+      setSubAccountsPermissions(permission);
+    };
+    getPermissions();
+  }, [data]);
+
   return (
     <>
       {userDetails?.role === "AGENCY_OWNER" && (
@@ -114,9 +116,10 @@ const UserPermissions = ({
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             {subAccounts?.map((subAccount) => {
-              const subAccountPermissionsDetails = userPermissions?.find(
-                (p) => p.subAccountId === subAccount.id
-              );
+              const subAccountPermissionsDetails =
+                subAccountsPermissions?.Permissions.find(
+                  (p) => p.subAccountId === subAccount.id
+                );
 
               return (
                 <div

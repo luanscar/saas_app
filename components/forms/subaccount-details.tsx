@@ -37,7 +37,6 @@ import { saveActivityLogsNotification } from "@/actions/agency";
 const formSchema = z.object({
   name: z.string(),
   companyEmail: z.string(),
-
   subAccountLogo: z.string(),
 });
 
@@ -72,18 +71,22 @@ const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(userId);
     try {
-      const response = await upsertSubAccount({
-        id: details?.id ? details.id : v4(),
-        subAccountLogo: values.subAccountLogo,
-        name: values.name,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        companyEmail: values.companyEmail,
-        agencyId: agencyDetails.id,
-        connectAccountId: "",
-        goal: 5000,
-      });
+      const response = await upsertSubAccount(
+        {
+          id: details?.id ? details.id : v4(),
+          subAccountLogo: values.subAccountLogo,
+          name: values.name,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          companyEmail: values.companyEmail,
+          agencyId: agencyDetails.id,
+          connectAccountId: "",
+          goal: 5000,
+        },
+        userId
+      );
       if (!response) throw new Error("No response from server");
       await saveActivityLogsNotification({
         agencyId: response.agencyId,

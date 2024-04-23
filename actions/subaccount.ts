@@ -4,14 +4,18 @@ import { db } from "@/lib/db";
 import { SubAccount } from "@prisma/client";
 import { v4 } from "uuid";
 
-export const upsertSubAccount = async (subAccount: SubAccount) => {
+export const upsertSubAccount = async (
+  subAccount: SubAccount,
+  userId: string
+) => {
   if (!subAccount.companyEmail) return null;
+  console.log(userId);
   const agencyOwner = await db.user.findFirst({
     where: {
       Agency: {
         id: subAccount.agencyId,
       },
-      role: "AGENCY_OWNER",
+      id: userId,
     },
   });
 
@@ -85,21 +89,20 @@ export const upsertSubAccount = async (subAccount: SubAccount) => {
   return response;
 };
 
-
 export const getSubaccountDetails = async (subaccountId: string) => {
   const response = await db.subAccount.findUnique({
     where: {
       id: subaccountId,
     },
-  })
-  return response
-}
+  });
+  return response;
+};
 
 export const deleteSubAccount = async (subaccountId: string) => {
   const response = await db.subAccount.delete({
     where: {
       id: subaccountId,
     },
-  })
-  return response
-}
+  });
+  return response;
+};
