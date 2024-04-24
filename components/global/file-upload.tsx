@@ -17,9 +17,9 @@ const FileUpload = ({ apiEndpoint, onChange, value }: Props) => {
 
   if (value) {
     return (
-      <div className="flex flex-row  justify-start items-center gap-4">
+      <div className="flex flex-row justify-center items-center gap-4">
         {type !== "pdf" ? (
-          <div className="relative h-20 w-20">
+          <div className="relative  h-20 w-20">
             <Image fill src={value} alt="Upload" className="rounded-full" />
             <button
               onClick={() => onChange("")}

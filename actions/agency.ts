@@ -4,7 +4,62 @@ import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Agency, Plan, Role, User } from "@prisma/client";
 import { redirect } from "next/navigation";
-import { v4 } from "uuid";
+
+export const createAgency = async (agency: Agency, price?: Plan) => {
+  if (!agency.companyEmail) return null;
+  const user = await currentUser()
+
+  try {
+    const agencyDetails = await db.agency.create({
+      data: {
+        users: {
+          connect: {
+           email: user?.email
+          }
+        },
+        ...agency,
+        SidebarOption: {
+          create: [
+            {
+              name: "Dashboard",
+              icon: "chart",
+              link: `/agency/${agency.id}/dashboard`,
+            },
+            {
+              name: "Launchpad",
+              icon: "launchpad",
+              link: `/agency/${agency.id}/launchpad`,
+            },
+            {
+              name: "Billing",
+              icon: "payment",
+              link: `/agency/${agency.id}/billing`,
+            },
+            {
+              name: "Settings",
+              icon: "settings",
+              link: `/agency/${agency.id}/settings`,
+            },
+            {
+              name: "Sub Accounts",
+              icon: "person",
+              link: `/agency/${agency.id}/all-subaccounts`,
+            },
+            {
+              name: "Team",
+              icon: "shield",
+              link: `/agency/${agency.id}/team`,
+            },
+          ],
+        },
+      }
+    })
+
+    return agencyDetails;
+  } catch (error) {
+    console.log({error: error})
+  }
+}
 
 export const upsertAgency = async (agency: Agency, price?: Plan) => {
   if (!agency.companyEmail) return null;

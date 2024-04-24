@@ -1,5 +1,6 @@
 import { verifyAndAcceptInvitation } from "@/actions/agency";
 import AgencyDetails from "@/components/forms/agency-details";
+import UserDropdown from "@/components/sidebar/user-dropdown";
 import {
   Card,
   CardContent,
@@ -8,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { currentUser } from "@/lib/auth";
-import { Plan } from "@prisma/client";
+import { Plan, User } from "@prisma/client";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -44,24 +45,22 @@ export default async function AgencyPage({
   }
 
   return (
-    <div className="w-full  flex flex-col justify-center items-center p-4 gap-y-4 z-20">
-      <Card className="md:w-2/5">
-        <CardHeader>
-          <CardTitle>Register your company</CardTitle>
-          <CardDescription>
-            Enter your information to register your company
-          </CardDescription>
-        </CardHeader>
-      </Card>
+    <div className="flex flex-col h-full flex-1 p-4">
+      <div className="w-full flex justify-end">
+        <UserDropdown user={user as User} />
+      </div>
 
-      <Card className="md:w-2/5">
-        <CardHeader>
-          <CardTitle>Company Information</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="flex  flex-col mx-auto h-full justify-center items-center space-y-5 md:w-[512px]">
+        <h1 className="text-3xl ">Create a new agency</h1>
+
+        <p className="text-lg text-center text-muted-foreground">
+          Fill in the details of your new agency to start using our services.
+        </p>
+
+        <div className="bg-primary-foreground rounded-md p-6">
           <AgencyDetails />
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

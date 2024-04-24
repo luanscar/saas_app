@@ -23,7 +23,7 @@ import { Switch } from "../ui/switch";
 import { Button } from "../ui/button";
 import Loading from "../global/loading";
 import { initUser } from "@/actions/user";
-import { upsertAgency } from "@/actions/agency";
+import { createAgency, upsertAgency } from "@/actions/agency";
 import { v4 } from "uuid";
 import { toast } from "sonner";
 import { useToast } from "../ui/use-toast";
@@ -66,7 +66,7 @@ export default function AgencyDetails({ data }: Props) {
 
         newUserData = await initUser({ role: "AGENCY_OWNER" });
 
-        const response = await upsertAgency({
+        const response = await createAgency({
           id: data?.id ? data.id : v4(),
           agencyLogo: values.agencyLogo,
           name: values.name,
@@ -100,7 +100,7 @@ export default function AgencyDetails({ data }: Props) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex justify-center flex-col gap-y-4">
+        <div className="flex justify-center flex-col gap-y-4 bg-transparent">
           <FormField
             disabled={isLoading}
             control={form.control}
@@ -120,7 +120,7 @@ export default function AgencyDetails({ data }: Props) {
             )}
           />
 
-          <div className="flex md:flex-row gap-4">
+          <div className="flex md:flex-col gap-4">
             <FormField
               disabled={isLoading}
               control={form.control}

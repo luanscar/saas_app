@@ -1,21 +1,10 @@
 "use client";
-import { CircleUser, Menu, Search } from "lucide-react";
+import { Check, CheckCheck, ChevronDown, Menu, Search } from "lucide-react";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { Input } from "../ui/input";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import UserDropdown from "./user-dropdown";
-import {
-  Agency,
   AgencySidebarOption,
   SubAccount,
   SubAccountSidebarOption,
@@ -23,7 +12,7 @@ import {
 } from "@prisma/client";
 import Link from "next/link";
 import { icons } from "@/lib/constants";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 type Props = {
   defaultOpen?: boolean;
@@ -31,17 +20,36 @@ type Props = {
   sidebarOpt: AgencySidebarOption[] | SubAccountSidebarOption[];
   sidebarLogo: string;
   details: any;
-  user: Partial<User>;
+  user: any;
 };
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
+import { Label } from "../ui/label";
 
 const MenuSidebar = ({
   defaultOpen,
   user,
+  subAccounts,
   sidebarLogo,
   sidebarOpt,
   details,
 }: Props) => {
   const pathname = usePathname();
+  const params = useParams();
   const activePath = pathname.split("/")[3];
   const openState = useMemo(
     () => (defaultOpen ? { open: true } : {}),
@@ -50,7 +58,7 @@ const MenuSidebar = ({
 
   return (
     <>
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col">
         <header
           className={cn([
             "flex h-14 items-center border-b bg-muted/40 gap-4   px-4 ",
@@ -72,7 +80,7 @@ const MenuSidebar = ({
           </div>
           <UserDropdown user={user} />
         </header>
-      </div>
+      </div> */}
 
       <Sheet modal={false} {...openState}>
         <SheetTrigger asChild className="absolute top-2.5 left-2">
@@ -85,7 +93,7 @@ const MenuSidebar = ({
           showX={!defaultOpen}
           side="left"
           className={cn([
-            " fixed top-0 border-r-[1px] p-6",
+            " fixed top-0 !border-0 p-6",
             {
               "hidden md:inline-block z-0 w-72": defaultOpen,
               "inline-block md:hidden z-[100] w-full": !defaultOpen,
@@ -93,6 +101,165 @@ const MenuSidebar = ({
           ])}
         >
           <nav className="grid gap-2 text-lg font-medium">
+            {/* <AccountSwitcher
+              subAccounts={subAccounts}
+              details={details}
+              sidebarLogo={sidebarLogo}
+              user={user}
+            /> */}
+
+            <div className="flex items-center justify-between">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="justify-start items-center flex rounded-sm p-1 hover:bg-primary-foreground gap-2">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={sidebarLogo} />
+                    <AvatarFallback>{details.name}</AvatarFallback>
+                  </Avatar>
+                  <Label>{details.name}</Label>
+                  <ChevronDown size={12} />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuItem>Preferences</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Sub Account Settings</DropdownMenuItem>
+                  <DropdownMenuItem>Team</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                      Switch Account
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                      <DropdownMenuSubContent>
+                        {(user?.role === "AGENCY_OWNER" ||
+                          user?.role === "AGENCY_ADMIN") &&
+                          user?.Agency && (
+                            <div>
+                              <DropdownMenuLabel>
+                                <span>Agency</span>
+                              </DropdownMenuLabel>
+                              <DropdownMenuItem className="gap-2 hover:bg-primary-foreground cursor-pointer ">
+                                <Avatar className="h-6 w-6">
+                                  <AvatarImage src={user?.Agency?.agencyLogo} />
+                                  <AvatarFallback>
+                                    {details.name}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <Link
+                                  className="flex justify-between items-center  flex-1"
+                                  href={`/agency/${details.id}`}
+                                >
+                                  <Label className="cursor-pointer">
+                                    {details.name}
+                                  </Label>
+                                  {user.agencyId === details.id && (
+                                    <Check size={16} />
+                                  )}
+                                </Link>
+                              </DropdownMenuItem>
+                            </div>
+                          )}
+
+                        <DropdownMenuLabel>
+                          <span>Sub Accounts</span>
+                        </DropdownMenuLabel>
+                        {subAccounts.map((subaccount) => {
+                          return (
+                            <div key={subaccount.id}>
+                              <DropdownMenuItem className="gap-2 hover:bg-primary-foreground cursor-pointer ">
+                                <Avatar className="h-6 w-6">
+                                  <AvatarImage
+                                    src={subaccount.subAccountLogo}
+                                  />
+                                  <AvatarFallback>
+                                    {subaccount.name}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <Link
+                                  className="flex justify-between items-center  flex-1"
+                                  href={`/subaccount/${subaccount.id}`}
+                                >
+                                  <Label className="cursor-pointer">
+                                    {subaccount.name}
+                                  </Label>
+                                  {subaccount.id === params.subaccountId && (
+                                    <Check size={16} />
+                                  )}
+                                </Link>
+                              </DropdownMenuItem>
+                            </div>
+                          );
+                        })}
+                      </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                  </DropdownMenuSub>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            {/* {subAccounts.map((subaccount) => {
+              return (
+                <div
+                  key={subaccount.id}
+                  className="flex items-center justify-between"
+                >
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="justify-start items-center flex rounded-sm p-1 hover:bg-primary-foreground gap-2">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={subaccount.subAccountLogo} />
+                        <AvatarFallback>{subaccount.name}</AvatarFallback>
+                      </Avatar>
+                      <Label>{subaccount.name}</Label>
+                      <ChevronDown size={12} />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start">
+                      <DropdownMenuItem>Preferences</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>Sub Account Settings</DropdownMenuItem>
+                      <DropdownMenuItem>Team</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                          Switch Account
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                          <DropdownMenuSubContent>
+                            <DropdownMenuLabel>
+                              {subaccount.companyEmail}
+                            </DropdownMenuLabel>
+                            <DropdownMenuItem className="gap-2 hover:bg-primary-foreground cursor-pointer ">
+                              <Avatar className="h-6 w-6">
+                                <AvatarImage src={subaccount.subAccountLogo} />
+                                <AvatarFallback>
+                                  {subaccount.name}
+                                </AvatarFallback>
+                              </Avatar>
+                              <Link
+                                className="flex justify-between items-center  flex-1"
+                                href={`/subaccount/${subaccount.id}`}
+                              >
+                                <Label className="cursor-pointer">
+                                  {subaccount.name}
+                                </Label>
+                                {subaccount.id === params.subaccountId && (
+                                  <Check size={16} />
+                                )}
+                              </Link>
+                            </DropdownMenuItem>
+                          </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                      </DropdownMenuSub>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <Link
+                    className="hover:bg-primary-foreground rounded-sm p-1"
+                    href={`/subaccount/${subaccount.id}/search`}
+                  >
+                    <Search size={16} />
+                  </Link>
+                </div>
+              );
+            })} */}
+
             {sidebarOpt.map((sidebarOptions) => {
               let val;
 
@@ -106,7 +273,7 @@ const MenuSidebar = ({
                 <div
                   key={sidebarOptions.id}
                   className={cn([
-                    "",
+                    "hover:bg-primary-foreground rounded-lg",
                     (sidebarOptions.name.toLowerCase() === activePath ||
                       activePath ===
                         sidebarOptions.name

@@ -55,7 +55,7 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
   if (!agencyDetails) return null;
 
   return (
-    <div className="lg:w-[640px]">
+    <div className="">
       <h1 className="md:text-3xl font-semibold">Settings</h1>
 
       <Separator className="md:my-6 my-3" />

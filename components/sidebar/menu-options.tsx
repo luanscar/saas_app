@@ -10,7 +10,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { ChevronsUpDown, Compass, Menu, PlusCircleIcon } from "lucide-react";
-import clsx from "clsx";
 import { AspectRatio } from "../ui/aspect-ratio";
 import Image from "next/image";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -22,6 +21,7 @@ import {
   CommandItem,
   CommandList,
 } from "../ui/command";
+
 import Link from "next/link";
 import CustomModal from "../global/custom-modal";
 import { Separator } from "../ui/separator";
@@ -195,7 +195,7 @@ const MenuOptions = ({
                                 <div className="flex flex-col flex-1">
                                   {subaccount.name}
                                   <span className="text-muted-foreground">
-                                    {subaccount.address}
+                                    {subaccount.companyEmail}
                                   </span>
                                 </div>
                               </Link>
@@ -216,7 +216,7 @@ const MenuOptions = ({
                                   <div className="flex flex-col flex-1">
                                     {subaccount.name}
                                     <span className="text-muted-foreground">
-                                      {subaccount.address}
+                                      {subaccount.companyEmail}
                                     </span>
                                   </div>
                                 </Link>

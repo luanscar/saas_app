@@ -73,7 +73,7 @@ export default async function AllSubAccountsPage({
                           <div className="flex flex-col">
                             {subaccount.name}
                             <span className="text-muted-foreground text-xs">
-                              {subaccount.address}
+                              {subaccount.companyEmail}
                             </span>
                           </div>
                         </div>

@@ -36,7 +36,9 @@ export default function UserDropdown({ user }: UserDropdownProps) {
         >
           <Avatar className="h-8 w-8  ring-0">
             <AvatarImage src={user.image as string} alt={user.name as string} />
-            <AvatarFallback>U</AvatarFallback>
+            <AvatarFallback>
+              {user.name ? user.name?.split(" ")[0].slice(0, 1) : "User"}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -49,8 +51,7 @@ export default function UserDropdown({ user }: UserDropdownProps) {
             </p>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
+        {/* <DropdownMenuGroup>
           <DropdownMenuItem>
             <MixerVerticalIcon className="w-3 h-3 mr-3" />
             Configuraçoes
@@ -59,7 +60,7 @@ export default function UserDropdown({ user }: UserDropdownProps) {
             <RocketIcon className="w-3 h-3 mr-3" />
             Upgrade
           </DropdownMenuItem>
-        </DropdownMenuGroup>
+        </DropdownMenuGroup> */}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut()}>
           <LockClosedIcon className="w-3 h-3 mr-3" />

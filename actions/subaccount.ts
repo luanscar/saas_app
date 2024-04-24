@@ -48,6 +48,11 @@ export const upsertSubAccount = async (
             link: `/subaccount/${subAccount.id}/launchpad`,
           },
           {
+            name: "Inbox",
+            icon: "messages",
+            link: `/subaccount/${subAccount.id}/inbox`,
+          },
+          {
             name: "Settings",
             icon: "settings",
             link: `/subaccount/${subAccount.id}/settings`,
