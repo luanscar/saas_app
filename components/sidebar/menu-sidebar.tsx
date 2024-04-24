@@ -194,6 +194,12 @@ const MenuSidebar = ({
                   </DropdownMenuSub>
                 </DropdownMenuContent>
               </DropdownMenu>
+              <Link
+                className="hover:bg-primary-foreground rounded-sm p-1"
+                href={`/subaccount/${details.id}/search`}
+              >
+                <Search size={16} />
+              </Link>
             </div>
 
             {/* {subAccounts.map((subaccount) => {
