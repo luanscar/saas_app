@@ -1,7 +1,5 @@
 import { verifyAndAcceptInvitation } from "@/actions/agency";
 import Sidebar from "@/components/sidebar";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Unauthorized from "@/components/unauthorized";
 import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import React from "react";

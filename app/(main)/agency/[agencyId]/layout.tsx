@@ -39,11 +39,13 @@ export default async function AgencyLayoutId({
   if (notifications) allNoti = notifications;
 
   return (
-    <div>
+    <div className="w-screen h-screen">
       <Sidebar id={agencyId} type="agency" />
-      <ScrollArea className="h-screen md:ml-72">
-        <main className=" mb-16 gap-4 p-4 md:gap-8 md:p-10 ">{children}</main>
-      </ScrollArea>
+      <div className="w-screen md:absolute md:top-2 h-screen md:left-72">
+        <ScrollArea className="md:border bg-primary-foreground rounded-sm md:w-[calc(100%_-_18.5rem)] h-screen md:h-[calc(100%_-_1rem)] ">
+          {children}
+        </ScrollArea>
+      </div>
     </div>
 
     // <div className="h-screen ">

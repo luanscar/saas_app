@@ -50,13 +50,12 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
 
   const subAccounts = userDetails?.Agency?.SubAccount;
 
-  const userPermissions = userDetails?.Permissions;
-
   if (!agencyDetails) return null;
 
   return (
-    <div className="">
-      <h1 className="md:text-3xl font-semibold">Settings</h1>
+    <div className="flex md:w-[40%] w-full flex-col mx-auto p-10">
+      <h1 className="md:text-2xl font-semibold">Settings</h1>
+      <p className="text-muted-foreground">Manager your details</p>
 
       <Separator className="md:my-6 my-3" />
       <div className="flex flex-col gap-6">

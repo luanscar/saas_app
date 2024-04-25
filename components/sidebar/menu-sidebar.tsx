@@ -49,6 +49,7 @@ const MenuSidebar = ({
   details,
 }: Props) => {
   const pathname = usePathname();
+  const type = pathname.split("/")[1];
   const params = useParams();
   const activePath = pathname.split("/")[3];
   const openState = useMemo(
@@ -58,32 +59,8 @@ const MenuSidebar = ({
 
   return (
     <>
-      {/* <div className="flex flex-col">
-        <header
-          className={cn([
-            "flex h-14 items-center border-b bg-muted/40 gap-4   px-4 ",
-            { "md:ml-72 lg:h-[60px] lg:px-6 ": defaultOpen },
-            { hidden: !defaultOpen },
-          ])}
-        >
-          <div className="w-full flex-1 ml-10 md:ml-0">
-            <form>
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search products..."
-                  className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-                />
-              </div>
-            </form>
-          </div>
-          <UserDropdown user={user} />
-        </header>
-      </div> */}
-
       <Sheet modal={false} {...openState}>
-        <SheetTrigger asChild className="absolute top-2.5 left-2">
+        <SheetTrigger asChild className="absolute top-2.5 z-50 left-2">
           <Button variant="outline" size="icon" className="shrink-0 md:hidden">
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle navigation menu</span>
@@ -96,18 +73,11 @@ const MenuSidebar = ({
             " fixed top-0 !border-0 p-6",
             {
               "hidden md:inline-block z-0 w-72": defaultOpen,
-              "inline-block md:hidden z-[100] w-full": !defaultOpen,
+              "inline-block md:hidden z-[100] w-[70%]": !defaultOpen,
             },
           ])}
         >
           <nav className="grid gap-2 text-lg font-medium">
-            {/* <AccountSwitcher
-              subAccounts={subAccounts}
-              details={details}
-              sidebarLogo={sidebarLogo}
-              user={user}
-            /> */}
-
             <div className="flex items-center justify-between">
               <DropdownMenu>
                 <DropdownMenuTrigger className="justify-start items-center flex rounded-sm p-1 hover:bg-primary-foreground gap-2">
@@ -121,7 +91,11 @@ const MenuSidebar = ({
                 <DropdownMenuContent align="start">
                   <DropdownMenuItem>Preferences</DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Sub Account Settings</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href={`/${type}/${details.id}/settings`}>
+                      Settings
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem>Team</DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuSub>
@@ -141,15 +115,15 @@ const MenuSidebar = ({
                                 <Avatar className="h-6 w-6">
                                   <AvatarImage src={user?.Agency?.agencyLogo} />
                                   <AvatarFallback>
-                                    {details.name}
+                                    {user.Agency.name}
                                   </AvatarFallback>
                                 </Avatar>
                                 <Link
-                                  className="flex justify-between items-center  flex-1"
-                                  href={`/agency/${details.id}`}
+                                  className="flex flex-1 justify-between items-center "
+                                  href={`/agency/${user.Agency.id}`}
                                 >
                                   <Label className="cursor-pointer">
-                                    {details.name}
+                                    {user.Agency.name}
                                   </Label>
                                   {user.agencyId === details.id && (
                                     <Check size={16} />
@@ -159,12 +133,12 @@ const MenuSidebar = ({
                             </div>
                           )}
 
-                        <DropdownMenuLabel>
-                          <span>Sub Accounts</span>
-                        </DropdownMenuLabel>
                         {subAccounts.map((subaccount) => {
                           return (
                             <div key={subaccount.id}>
+                              <DropdownMenuLabel>
+                                <span>Sub Accounts</span>
+                              </DropdownMenuLabel>
                               <DropdownMenuItem className="gap-2 hover:bg-primary-foreground cursor-pointer ">
                                 <Avatar className="h-6 w-6">
                                   <AvatarImage
@@ -175,7 +149,7 @@ const MenuSidebar = ({
                                   </AvatarFallback>
                                 </Avatar>
                                 <Link
-                                  className="flex justify-between items-center  flex-1"
+                                  className="flex justify-between items-center w-full flex-1"
                                   href={`/subaccount/${subaccount.id}`}
                                 >
                                   <Label className="cursor-pointer">
